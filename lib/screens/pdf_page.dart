@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -60,49 +61,43 @@ Future<File> generatePdf({
     pw.Page(
       build: (pw.Context context) {
         return pw.Container(
+            height: double.infinity,
             width: double.infinity,
             child: pw.Padding(
                 padding: pw.EdgeInsets.all(16),
                 child: pw.Column(
 
                     mainAxisAlignment: pw.MainAxisAlignment.start,
+                    crossAxisAlignment: pw.CrossAxisAlignment.stretch,
                     children: [
 
                   //Cabeçalho
-                  pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: pw.CrossAxisAlignment.start,
-                      children: [
-                        pw.Container(
-
-                          child: pw.Text("S/ Imagem"),
-                        ),
                         pw.Column(children: [
-                          pw.Center(
-                              child: pw.Text(oficinaNome.toUpperCase(),
-                                  style: pw.TextStyle(
-                                      fontWeight: pw.FontWeight.bold))),
-                          pw.Row(
+                            pw.Center(
+                                child: pw.Text(oficinaNome.toUpperCase(),
+                                    style: pw.TextStyle(
+                                        fontWeight: pw.FontWeight.bold))),
+                            pw.Row(
 
-                              mainAxisAlignment: pw.MainAxisAlignment.start,
-                              children: [pw.Text(oficinaEndereco)]),
-                          pw.Row(
+                                mainAxisAlignment: pw.MainAxisAlignment.start,
+                                children: [pw.Text(oficinaEndereco)]),
+                            pw.Row(
 
-                              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                              children: [
-                                pw.Text(oficinaTelefone),
-                                pw.Text(oficinaEmail),
-                              ]),
-                          pw.Row(
-                              mainAxisAlignment: pw.MainAxisAlignment.start,
-                              children: [
-                                pw.Text(oficinaCnpj),
-                              ]),
-                        ]),
-                      ]),
-
-
-                  pw.Divider(),
+                                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                                children: [
+                                  pw.Text("Telefone: $oficinaTelefone"),
+                                  pw.SizedBox(
+                                    height: 2
+                                  ),
+                                  pw.Text("Email:  $oficinaEmail"),
+                                ]),
+                            pw.Row(
+                                mainAxisAlignment: pw.MainAxisAlignment.start,
+                                children: [
+                                  pw.Text("CNPJ: $oficinaCnpj"),
+                                ]),
+                          pw.Divider(),
+                          ]),
                   //Corpo
                   // Título do orçamento
                   pw.Center(
@@ -114,10 +109,10 @@ Future<File> generatePdf({
                       ),
                     ),
                   ),
-                  pw.SizedBox(height: 6),
+                  pw.SizedBox(height: 16),
                   pw.Column(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
 
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
 
                       // Informações do cliente
@@ -127,8 +122,9 @@ Future<File> generatePdf({
                           children: [
                             pw.Text("Nº DO ORÇAMENTO - $generatedNOrcamento"),
                           ]),
-                      pw.Center(child: pw.Text('Informações do Cliente')),
-                      pw.SizedBox(height: 8),
+                      pw.SizedBox(height: 16),
+                      pw.Center(child: pw.Text('Informações do Cliente', style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+                      pw.SizedBox(height: 16),
                       pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                         children: [
@@ -139,10 +135,16 @@ Future<File> generatePdf({
                           pw.Text('Email: ${clienteEmail ?? ""}'),
                         ],
                       ),
-                      pw.Text('Endereço: $clienteEndereco'),
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        children: [pw.Text('Endereço: $clienteEndereco'),]
+
+                      ),
+
                       pw.SizedBox(height: 16),
                       // Informações do carro
-                      pw.Center(child: pw.Text('Informações do Carro')),
+                      pw.Center(child: pw.Text('Informações do Carro', style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+                      pw.SizedBox(height: 16),
                       pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                         children: [
@@ -174,7 +176,9 @@ Future<File> generatePdf({
                             children: [
                               pw.Text(item['descricao'],
                                   style: pw.TextStyle(
-                                      fontWeight: pw.FontWeight.bold)),
+                                      fontWeight: pw.FontWeight.bold),
+                              softWrap: true,
+                              ),
                               pw.SizedBox(width: 10),
                               pw.Text(
                                 NumberFormat.currency(

@@ -56,7 +56,9 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
     filter: {"#": RegExp(r'[0-9]')}, // Permitir apenas números
   );
 
-  final _placaMaskFormatter = MaskTextInputFormatter(mask: '###-####');
+  final _placaMaskFormatter = MaskTextInputFormatter(mask: '###-####', filter: {
+    "#": RegExp(r'[A-Za-z0-9]')
+  });
 
   Empresa? empresa;
   // Função para carregar os dados da oficina
@@ -72,7 +74,7 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
 
   void _loadBannerAd() {
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test ID (substitua pelo seu)
+      adUnitId: 'ca-app-pub-0785743061078544/7741568304', // Test ID (substitua pelo seu)
       size: AdSize.banner,
       request: AdRequest(),
       listener: BannerAdListener(
@@ -286,6 +288,7 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
                             ),
                             SizedBox(height: 10),
                             TextFormField(
+                              textCapitalization: TextCapitalization.characters,
                               validator: (value) =>
                                   value!.isEmpty ? 'Placa obrigatória' : null,
                               inputFormatters: [_placaMaskFormatter],
@@ -316,6 +319,7 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
                         child: Column(
                           children: [
                             TextFormField(
+                              maxLines: 2,
                               controller: _itemDescricaoController,
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
@@ -440,7 +444,7 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
               ),
             ),
             _isAdLoaded ?
-            Container(
+            SizedBox(
               height: _bannerAd.size.height.toDouble(),
               child: AdWidget(ad: _bannerAd),
             ): Container()
