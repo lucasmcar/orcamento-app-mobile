@@ -6,6 +6,13 @@ import 'package:orcamento_app/screens/splash.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(
+      testDeviceIds: [
+        'D0E8090B6B0F8C8E75E89C059FDF7FAC'
+      ], // Seu ID do dispositivo
+    ),
+  );
   MobileAds.instance.initialize();
   runApp(MaterialApp(
     title: 'Orçamento App',

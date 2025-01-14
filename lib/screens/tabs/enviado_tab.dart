@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:open_file/open_file.dart';
 import 'package:orcamento_app/helper/database_helper.dart';
+
+import '../pdf_preview.dart';
 
 class EnviadoTab extends StatefulWidget {
   const EnviadoTab({super.key});
@@ -24,8 +24,14 @@ class _EnviadoTabState extends State<EnviadoTab> {
   }
 
   void openPdf(String path) {
-    // Aqui você pode usar um pacote como `pdf_viewer` ou `open_file` para abrir o PDF
-    PDFView(filePath: path); // Exemplo com `open_fil`
+    print(path);
+    // OpenFile.open(path);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PdfPreview(pdfPath: path),
+      ),
+    );
   }
 
   @override
@@ -64,7 +70,9 @@ class _EnviadoTabState extends State<EnviadoTab> {
                       subtitle: Text(path),
                       trailing: IconButton(
                         icon: const Icon(Icons.open_in_new),
-                        onPressed: () => openPdf(path),
+                        onPressed: () {
+                          openPdf("$path/Orcamentos/$name");
+                        },
                       ),
                     ),
                   );
@@ -78,29 +86,22 @@ class _EnviadoTabState extends State<EnviadoTab> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Confirmar exclusão", style: GoogleFonts.roboto(
-          textStyle: TextStyle(
-            fontSize: 16
-          )
-        ),),
-        content: Text("Tem certeza que deseja excluir este PDF?", style: GoogleFonts.roboto(
-            textStyle: TextStyle(
-                fontSize: 16
-            ))),
+        title: Text(
+          "Confirmar exclusão",
+          style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16)),
+        ),
+        content: Text("Tem certeza que deseja excluir este PDF?",
+            style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16))),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false), // Cancelar
-            child:  Text("Cancelar", style: GoogleFonts.roboto(
-                textStyle: TextStyle(
-                    fontSize: 16
-                ))),
+            child: Text("Cancelar",
+                style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16))),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true), // Confirmar
-            child: Text("Excluir", style: GoogleFonts.roboto(
-                textStyle: TextStyle(
-                    fontSize: 16
-                ))),
+            child: Text("Excluir",
+                style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16))),
           ),
         ],
       ),

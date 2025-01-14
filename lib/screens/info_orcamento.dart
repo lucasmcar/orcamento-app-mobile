@@ -25,6 +25,7 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
     _bannerAd.dispose();
     super.dispose();
   }
+
   double _totalPagamento = 0.0;
 
   final GlobalKey<FormState> _infoKey = GlobalKey<FormState>();
@@ -56,9 +57,8 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
     filter: {"#": RegExp(r'[0-9]')}, // Permitir apenas números
   );
 
-  final _placaMaskFormatter = MaskTextInputFormatter(mask: '###-####', filter: {
-    "#": RegExp(r'[A-Za-z0-9]')
-  });
+  final _placaMaskFormatter = MaskTextInputFormatter(
+      mask: '###-####', filter: {"#": RegExp(r'[A-Za-z0-9]')});
 
   Empresa? empresa;
   // Função para carregar os dados da oficina
@@ -74,7 +74,8 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
 
   void _loadBannerAd() {
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-0785743061078544/7741568304', // Test ID (substitua pelo seu)
+      adUnitId:
+          'ca-app-pub-3940256099942544/6300978111', // Test ID (substitua pelo seu)
       size: AdSize.banner,
       request: AdRequest(),
       listener: BannerAdListener(
@@ -93,11 +94,10 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
     _bannerAd.load();
   }
 
-
-
   // Solicitar permissão para acessar o armazenamento
   Future<bool> _requestStoragePermission() async {
-    final status = await Permission.mediaLibrary.request();
+    final status = await Permission.manageExternalStorage.request();
+    print(status);
     if (status.isGranted) {
       return true;
     } else if (status.isPermanentlyDenied) {
@@ -138,14 +138,13 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
       totalPagamento: _totalPagamento,
     );
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PdfPreview(pdfPath: pdfPath.path)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PdfPreview(pdfPath: pdfPath.path)));
 
     // Mostra feedback
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Orçamento salvo em $pdfPath!")),
     );
-
-
 
     // Opcional: Compartilhar o PDF
     //sharePdf(pdfPath);
@@ -402,7 +401,6 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
                             ),
                             Text(
                                 "Modelo do Veículo: ${_veiculoModeloController.text}"),
-
                             Text("Ano: ${_veiculoAnoController.text}"),
                             Text("Marca: ${_veiculoMarcaController.text}"),
                             Text("Placa: ${_veiculoPlacaController.text}"),
@@ -424,7 +422,9 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
                                   backgroundColor: Colors.indigo,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8))),
-                              onPressed: () async {_generateAndSavePDF(context);},
+                              onPressed: () async {
+                                _generateAndSavePDF(context);
+                              },
                               child: Text(
                                 "Visualizar e enviar o orçamento",
                                 style: TextStyle(
@@ -443,11 +443,12 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
                 ),
               ),
             ),
-            _isAdLoaded ?
-            SizedBox(
-              height: _bannerAd.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd),
-            ): Container()
+            _isAdLoaded
+                ? SizedBox(
+                    height: _bannerAd.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd),
+                  )
+                : Container()
           ],
         ),
       ),

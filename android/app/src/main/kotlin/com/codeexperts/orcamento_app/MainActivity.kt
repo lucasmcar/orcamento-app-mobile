@@ -1,4 +1,4 @@
-package com.example.orcamento_app_2
+package com.codeexperts.orcamento_app;
 
 import io.flutter.embedding.android.FlutterActivity
 
