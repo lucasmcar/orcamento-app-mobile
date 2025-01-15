@@ -1,6 +1,4 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:orcamento_app/models/pdf.dart';
-import 'package:path/path.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -66,7 +64,6 @@ class DatabaseHelper {
   Future<List<Map<String, Object?>>?> getPdfs() async {
     final db = await instance.database;
     final result = await db.query('pdf_path_db');
-    print(result);
     return result.isNotEmpty ? result : null;
   }
 

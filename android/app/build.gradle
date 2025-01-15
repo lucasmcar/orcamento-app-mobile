@@ -37,7 +37,14 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
         }
+
     }
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-ads:23.6.0'
+    // Adiciona o Google Mobile Ads SDK
+    implementation 'androidx.webkit:webkit:1.12.1' // Adiciona a dependência WebView do AndroidX
 }
 
 flutter {

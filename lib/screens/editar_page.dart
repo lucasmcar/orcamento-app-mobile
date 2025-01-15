@@ -56,7 +56,16 @@ class _EditarPageState extends State<EditarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Editar informações")),
+      appBar: AppBar(
+        titleSpacing: 3,
+        elevation: 7,
+        title: Text(
+          "Editar informações",
+          style: TextStyle(fontSize: 18),
+        ),
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.deepPurple,
+      ),
       body: _isLoading && empresa != null
           ? Center(
               child: Column(
@@ -71,9 +80,11 @@ class _EditarPageState extends State<EditarPage> {
                   Form(
                     key: _editEmpresaKey,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(right: 16, left: 16, top: 8),
+                            padding:
+                                EdgeInsets.only(right: 16, left: 16, top: 8),
                             child: TextFormField(
                               validator: (value) =>
                                   value!.isEmpty ? 'Campo obrigatório' : null,
@@ -161,7 +172,10 @@ class _EditarPageState extends State<EditarPage> {
                           ),
                         ),
                         SizedBox(height: 8),
-                        ElevatedButton(
+                        Padding(padding: EdgeInsets.only(right: 16, left: 16), child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.deepPurple,
+                                foregroundColor: Colors.white),
                             onPressed: () {
                               if (_editEmpresaKey.currentState!.validate()) {
                                 final empresa = Empresa(
@@ -186,7 +200,8 @@ class _EditarPageState extends State<EditarPage> {
                                     ));
                               }
                             },
-                            child: Text("Salvar Informações"))
+                            child: Text("Salvar Informações")))
+
                       ],
                     ),
                   )

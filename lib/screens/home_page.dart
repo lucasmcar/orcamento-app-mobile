@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 3,
         foregroundColor: Colors.white,
         actions: [
           PopupMenuButton<String>(
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ],
         title: Text(
           "Feed",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 18),
         ),
         backgroundColor: Colors.deepPurple,
         bottom: TabBar(

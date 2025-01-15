@@ -161,6 +161,7 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.white,
         title: Text(
           'Criar Orçamento',
           style: TextStyle(color: Colors.white),

@@ -8,9 +8,10 @@ class SobrePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          titleSpacing: 3,
           foregroundColor: Colors.white,
           backgroundColor: Colors.deepPurple,
-          title: Text('Sobre o app'),
+          title: Text('Sobre o app', style: TextStyle(fontSize: 18)),
         ),
         body: SingleChildScrollView(
           child: Column(

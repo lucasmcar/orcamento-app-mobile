@@ -15,21 +15,17 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return EasySplashScreen(
       loaderColor: Colors.white,
-      logo: Image.asset(
-          'assets/images/logo.png'),
+      logo: Image.asset('assets/images/logo.png'),
       title: Text(
         "Orçamento App",
         style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white
-        ),
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
       ),
       backgroundColor: Colors.deepPurple,
       showLoader: true,
       loadingText: Text("Carregando..."),
       navigator: HomePage(),
       durationInSeconds: 5,
-    );;
+    );
   }
 }

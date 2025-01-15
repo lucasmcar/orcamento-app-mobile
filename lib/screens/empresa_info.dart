@@ -39,8 +39,12 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Cadastro da Empresa',
-              style: TextStyle(color: Colors.white)),
+          foregroundColor: Colors.white,
+          titleSpacing: 3,
+          title: const Text(
+            'Cadastro da Empresa',
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
           backgroundColor: Colors.deepPurple,
           elevation: 5.0,
         ),
@@ -65,8 +69,8 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                               value!.isEmpty ? 'Campo obrigatório' : null,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(8))
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
                             labelText: 'Nome',
                             hintText: 'Nome da empresa',
                           ),
@@ -75,14 +79,13 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                       Padding(
                         padding: EdgeInsets.only(top: 16, left: 8, right: 8),
                         child: TextFormField(
-
                           validator: (value) =>
                               value!.isEmpty ? 'Campo obrigatório' : null,
                           controller: _enderecoController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8))
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
                             labelText: 'Endereço',
                             hintText: 'Endereço da empresa',
                           ),
@@ -92,12 +95,12 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                         padding: EdgeInsets.only(top: 16, left: 8, right: 8),
                         child: TextFormField(
                           validator: (value) =>
-                          value!.isEmpty ? 'Campo obrigatório' : null,
+                              value!.isEmpty ? 'Campo obrigatório' : null,
                           controller: _cidadeController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8))
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
                             labelText: 'Cidade',
                             hintText: 'Cidade da empresa',
                           ),
@@ -112,8 +115,8 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                           controller: _emailController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8))
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
                             labelText: 'Email',
                             hintText: 'Email da empresa',
                           ),
@@ -128,8 +131,8 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                           controller: _cnpjController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8))
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
                             labelText: 'Cnpj',
                             hintText: 'Cnpj da empresa',
                           ),
@@ -144,8 +147,8 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                           controller: _telefoneController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(8))
-                            ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8))),
                             labelText: 'Telefone',
                             hintText: 'Telefone da empresa',
                           ),
@@ -188,14 +191,13 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                             ),
                             onPressed: () {
                               final empresa = Empresa(
-                                nome: _nomeController.text,
-                                endereco: _enderecoController.text,
-                                cidade: _cidadeController.text,
-                                email: _emailController.text,
-                                cnpj: _cnpjController.text,
-                                telefone: _telefoneController.text,
-                                imagem_path: _imagePath
-                              );
+                                  nome: _nomeController.text,
+                                  endereco: _enderecoController.text,
+                                  cidade: _cidadeController.text,
+                                  email: _emailController.text,
+                                  cnpj: _cnpjController.text,
+                                  telefone: _telefoneController.text,
+                                  imagem_path: _imagePath);
 
                               _salvarDados(context, empresa);
                               clearFields();
@@ -219,7 +221,7 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
       db.insertEmpresa({
         'nome': empresa.nome,
         'endereco': empresa.endereco,
-        'cidade' : empresa.cidade,
+        'cidade': empresa.cidade,
         'email': empresa.email,
         'cnpj': empresa.cnpj,
         'telefone': empresa.telefone,

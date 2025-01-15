@@ -11,11 +11,18 @@ class PdfPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Visualização"),
+        titleSpacing: 3,
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.deepPurple,
+        title: Text(
+          "Visualização",
+          style: TextStyle(fontSize: 18),
+        ),
         actions: [
           IconButton(
-              onPressed: (){
-                Share.shareXFiles([XFile((pdfPath))], text: 'Segue o envio do orçamento');
+              onPressed: () {
+                Share.shareXFiles([XFile((pdfPath))],
+                    text: 'Segue o envio do orçamento');
               },
               icon: Icon(Icons.share))
         ],

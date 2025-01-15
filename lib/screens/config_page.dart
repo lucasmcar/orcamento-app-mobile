@@ -30,24 +30,27 @@ class _ConfigPageState extends State<ConfigPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Configuração"),
+        titleSpacing: 3,
+        title: Text(
+          "Configuração",
+          style: TextStyle(fontSize: 18),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
-
           children: [
             Padding(
                 padding: EdgeInsets.only(right: 16, left: 16),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-
-                  Icon(
-                    Icons.warning,
-                    color: Colors.yellow,
-                  ),
-                  Text("Apenas ative essas configurações se \npossuir servidor próprio")
-                ])),
+                      Icon(
+                        Icons.warning,
+                        color: Colors.yellow,
+                      ),
+                      Text(
+                          "Apenas ative essas configurações se \npossuir servidor próprio")
+                    ])),
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16),
               child: Row(
@@ -79,10 +82,11 @@ class _ConfigPageState extends State<ConfigPage> {
                                 Padding(
                                   padding: EdgeInsets.only(right: 16, left: 16),
                                   child: TextFormField(
+                                      controller: _urlController,
                                       decoration: const InputDecoration(
-                                    labelText: 'URL',
-                                    hintText: 'Url do servidor sem "/"',
-                                  )),
+                                        labelText: 'URL',
+                                        hintText: 'Url do servidor sem "/"',
+                                      )),
                                 ),
                                 SizedBox(
                                   height: 12,
@@ -91,20 +95,22 @@ class _ConfigPageState extends State<ConfigPage> {
                                     padding:
                                         EdgeInsets.only(right: 16, left: 16),
                                     child: TextFormField(
+                                        controller: _clienteController,
                                         decoration: const InputDecoration(
-                                      labelText: 'Rota do cliente',
-                                      hintText: 'Sem "/"',
-                                    ))),
+                                          labelText: 'Rota do cliente',
+                                          hintText: 'Sem "/"',
+                                        ))),
                                 SizedBox(
                                   height: 12,
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(right: 16, left: 16),
                                   child: TextFormField(
+                                      controller: _veiculoController,
                                       decoration: const InputDecoration(
-                                    labelText: 'Rota do veículo',
-                                    hintText: 'Sem "/"',
-                                  )),
+                                        labelText: 'Rota do veículo',
+                                        hintText: 'Sem "/"',
+                                      )),
                                 ),
                                 SizedBox(
                                   height: 12,
@@ -112,6 +118,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                 Padding(
                                   padding: EdgeInsets.only(right: 16, left: 16),
                                   child: TextFormField(
+                                      controller: _servicoController,
                                       validator: (value) => value!.isEmpty
                                           ? 'Campo obrigatório'
                                           : null,
@@ -149,12 +156,11 @@ class _ConfigPageState extends State<ConfigPage> {
               duration: Duration(milliseconds: 300),
               child: _isChecked
                   ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Form(
                             key: _validatedOrcamentKey,
                             child: Column(
-
                               children: [
                                 Padding(
                                   padding: EdgeInsets.only(right: 16, left: 16),
