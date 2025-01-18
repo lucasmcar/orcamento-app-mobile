@@ -18,7 +18,6 @@ class DatabaseHelper {
     final path = dbPath + filePath;
     //final path = join(dbPath, filePath);
 
-
     return await openDatabase(path, version: 2, onCreate: _createDB);
   }
 
@@ -56,7 +55,7 @@ class DatabaseHelper {
     ''');
   }
 
-  Future insertPdf(Map<String, dynamic> pdf) async{
+  Future insertPdf(Map<String, dynamic> pdf) async {
     final db = await instance.database;
     return await db.insert('pdf_path_db', pdf);
   }
@@ -72,8 +71,23 @@ class DatabaseHelper {
     await db.delete('pdf_path_db', where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<String?> getPdfPathById(int id) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'pdf_path_db', // Nome da tabela
+      columns: ['path'], // Coluna do caminho
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first['path'] as String?;
+    }
+    return null;
+  }
+
   // Servidor
-  Future insertServidor(Map<String, dynamic> servidor) async{
+  Future insertServidor(Map<String, dynamic> servidor) async {
     final db = await instance.database;
     return await db.insert('servidor_db', servidor);
   }
@@ -86,7 +100,8 @@ class DatabaseHelper {
 
   Future<int> editServidor(Map<String, dynamic> servidor) async {
     final db = await instance.database;
-    return await db.update('servidor_db', servidor, where: 'id = ?', whereArgs: [servidor['id']]);
+    return await db.update('servidor_db', servidor,
+        where: 'id = ?', whereArgs: [servidor['id']]);
   }
 
   //Empresa
@@ -97,7 +112,8 @@ class DatabaseHelper {
 
   Future<int> editEmpresa(Map<String, dynamic> empresa) async {
     final db = await instance.database;
-    return await db.update('empresa_db', empresa, where: 'id = ?', whereArgs: [empresa['id']]);
+    return await db.update('empresa_db', empresa,
+        where: 'id = ?', whereArgs: [empresa['id']]);
   }
 
   Future<Map<String, dynamic>?> getEmpresa() async {
@@ -105,7 +121,6 @@ class DatabaseHelper {
     final result = await db.query('empresa_db', limit: 1);
     return result.isNotEmpty ? result.first : null;
   }
-
 
   Future close() async {
     final db = await instance.database;

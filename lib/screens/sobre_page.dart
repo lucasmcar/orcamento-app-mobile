@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class SobrePage extends StatelessWidget {
+class SobrePage extends StatefulWidget {
   const SobrePage({super.key});
+
+  @override
+  State<SobrePage> createState() => _SobrePageState();
+}
+
+class _SobrePageState extends State<SobrePage> {
+  late BannerAd _bannerAd;
+  bool _isAdLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadBannerAd();
+    });
+  }
+
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +95,51 @@ class SobrePage extends StatelessWidget {
                     'Ele armazena dados como email, nome, endereço e telefone e também dados básicos do veículo.\n'
                     'localmente, apenas para preenchimento do documento.'
                     '\nCaso a empresa utilize servidor próprio e deseje armazenar esses dados,\ndeverá ter conscentimento do cliente'),
-              )
+              ),
+              if (_isAdLoaded)
+                Container(
+                  alignment: Alignment.center,
+                  width: _bannerAd.size.width.toDouble(),
+                  height: _bannerAd.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd),
+                ),
             ],
           ),
         ));
+  }
+
+  void _loadBannerAd() async {
+    try {
+      AnchoredAdaptiveBannerAdSize? bannerAdSize =
+          await AdSize.getAnchoredAdaptiveBannerAdSize(
+        Orientation.portrait,
+        MediaQuery.of(context).size.width.truncate(),
+      );
+
+      if (bannerAdSize != null) {
+        _bannerAd = BannerAd(
+          adUnitId:
+              'ca-app-pub-0785743061078544/7741568304', // Substitua pelo seu ID
+          size: bannerAdSize,
+          request: const AdRequest(),
+          listener: BannerAdListener(
+            onAdLoaded: (Ad ad) {
+              setState(() {
+                _isAdLoaded = true;
+              });
+            },
+            onAdFailedToLoad: (Ad ad, LoadAdError error) {
+              ad.dispose();
+              print('Erro ao carregar o banner: $error');
+            },
+          ),
+        );
+        await _bannerAd.load();
+      } else {
+        print('Erro: Não foi possível calcular o tamanho do banner.');
+      }
+    } catch (e) {
+      print('Erro ao inicializar o banner: $e');
+    }
   }
 }

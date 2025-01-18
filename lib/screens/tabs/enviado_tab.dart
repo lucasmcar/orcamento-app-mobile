@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:orcamento_app/helper/database_helper.dart';
@@ -83,36 +85,78 @@ class _EnviadoTabState extends State<EnviadoTab> {
   }
 
   Future<void> _showDeleteConfirmationDialog(int id) async {
+    bool deleteFile = false; // Estado local para o checkbox
+
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "Confirmar exclusão",
-          style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16)),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(
+            "Confirmar exclusão",
+            style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16)),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Tem certeza que deseja excluir este PDF?",
+                style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16)),
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: deleteFile,
+                    onChanged: (value) {
+                      setState(() {
+                        deleteFile = value ?? false;
+                      });
+                    },
+                  ),
+                  Text(
+                    "Excluir também o arquivo",
+                    style:
+                        GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false), // Cancelar
+              child: Text(
+                "Cancelar",
+                style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16)),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true), // Confirmar
+              child: Text(
+                "Excluir",
+                style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16)),
+              ),
+            ),
+          ],
         ),
-        content: Text("Tem certeza que deseja excluir este PDF?",
-            style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16))),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false), // Cancelar
-            child: Text("Cancelar",
-                style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16))),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true), // Confirmar
-            child: Text("Excluir",
-                style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 16))),
-          ),
-        ],
       ),
     );
-
     if (confirm == true) {
       // Mostra o loading enquanto deleta
       setState(() => _isLoading = true);
 
       // Chama o método deletePdf para realizar a exclusão
       await deletePdf(id);
+
+      if (deleteFile) {
+        // Excluir o arquivo físico
+        final pdfPath = await DatabaseHelper.instance.getPdfPathById(id);
+        if (pdfPath != null) {
+          final file = File(pdfPath);
+          if (await file.exists()) {
+            await file.delete();
+          }
+        }
+      }
 
       // Recarrega a lista de PDFs para refletir as alterações
       await getPdfs();

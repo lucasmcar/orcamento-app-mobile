@@ -210,7 +210,7 @@ class _EmpresaInfoState extends State<EmpresaInfo> {
                           onPressed: () {
                             Navigator.popAndPushNamed(context, '/edit');
                           },
-                          child: Text("Ir para ediacao"))
+                          child: Text("Ir para edição"))
                     ]))));
   }
 

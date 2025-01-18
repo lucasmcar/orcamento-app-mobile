@@ -8,6 +8,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   RequestConfiguration configuration = RequestConfiguration(
     testDeviceIds: ['D0E8090B6B0F8C8E75E89C059FDF7FAC'], // Substitua pelo seu
+    tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
   );
   MobileAds.instance.updateRequestConfiguration(configuration);
 

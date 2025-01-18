@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:orcamento_app/helper/database_helper.dart';
@@ -17,12 +16,15 @@ class InfoOrcamento extends StatefulWidget {
 
 class _InfoOrcamentoState extends State<InfoOrcamento> {
   final List<Map<String, dynamic>> _itens = [];
-  late BannerAd _bannerAd;
-  bool _isAdLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadEmpresaData(); // Carregar os dados da oficina assim que a página for carregada
+  }
 
   @override
   void dispose() {
-    _bannerAd.dispose();
     super.dispose();
   }
 
@@ -72,30 +74,8 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
     }
   }
 
-  void _loadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId:
-          'ca-app-pub-3940256099942544/6300978111', // Test ID (substitua pelo seu)
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          setState(() {
-            _isAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          ad.dispose();
-          print('Ad failed to load: $error');
-        },
-      ),
-    );
-
-    _bannerAd.load();
-  }
-
   // Solicitar permissão para acessar o armazenamento
-  Future<bool> _requestStoragePermission() async {
+  /*Future<bool> _requestStoragePermission() async {
     final status = await Permission.manageExternalStorage.request();
     print(status);
     if (status.isGranted) {
@@ -110,12 +90,12 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
       return false;
     }
     return false; // Ensure a boolean is always returned
-  }
+  }*/
 
   // Método para gerar o PDF e salvar no dispositivo
   Future<void> _generateAndSavePDF(BuildContext context) async {
-    final hasPermission = await _requestStoragePermission();
-    if (!hasPermission) return;
+    /*final hasPermission = await _requestStoragePermission();
+    if (!hasPermission) return;*/
 
     // Continue com a geração do PDF
     final pdfPath = await generatePdf(
@@ -148,13 +128,6 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
 
     // Opcional: Compartilhar o PDF
     //sharePdf(pdfPath);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadBannerAd();
-    loadEmpresaData(); // Carregar os dados da oficina assim que a página for carregada
   }
 
   @override
@@ -444,12 +417,6 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
                 ),
               ),
             ),
-            _isAdLoaded
-                ? SizedBox(
-                    height: _bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd),
-                  )
-                : Container()
           ],
         ),
       ),
@@ -520,22 +487,4 @@ class _InfoOrcamentoState extends State<InfoOrcamento> {
       _itens.removeAt(index); // Remove o item da lista
     });
   }
-
-  /*void _generatePDF() {
-    // Chama a função para gerar o PDF com dados do Stepper
-    generatePdf(
-      // Id do orçamento (exemplo)
-      clienteNome: _clienteNomeController.text,
-      clienteTelefone: _clienteTelefoneController.text,
-      clienteEndereco: _clienteEnderecoController.text,
-      veiculoModelo: _veiculoModeloController.text,
-      veiculoAno: _veiculoAnoController.text,
-      veiculoPlaca: _veiculoPlacaController.text,
-      veiculoCor: _veiculoCorController.text,
-      veiculoMarca: _veiculoMarcaController.text,
-      itens: _itens,
-      totalPagamento: _totalPagamento,
-      //apiUrl: 'https://example.com/approve', // URL para aprovação
-    );
-  }*/
 }
